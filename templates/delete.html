@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+   <div class="container px-5 py-5 border">
+        <div class="card w-50 px-5 py-5 mx-auto">
+            <h2>Delete Password</h2>
+            <hr>
+            <form action="{% url 'delete' object.id %}" method="post">
+                {% csrf_token %}
+              <h2>sure you want to delete this post: "{{ object.title }}"</h2>
+              <div class="form-group">
+                <a class="btn btn-outline-secondary" href="{% url 'index' %}"> Cancel</a>
+                <button type="submit" class="btn btn-outline-danger">Delete it!</button>
+              </div>
+            </form>
+  </div>
+  </div>
+  </div>
+{% endblock body %}
