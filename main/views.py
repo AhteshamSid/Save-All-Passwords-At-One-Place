@@ -7,6 +7,7 @@ from django.views import View
 from .models import User, SavePassword
 from django.contrib.auth.hashers import check_password, make_password
 
+
 # Create your views here.
 class Index(View):
     def get(self, request):
@@ -20,7 +21,6 @@ class Index(View):
         else:
             return render(request, 'index.html')
 
-
     def post(self, request):
         uname = request.POST['user_name']
         pwd = request.POST['password']
@@ -32,8 +32,6 @@ class Index(View):
         else:
             error = "Please Fill the fields."
             return render(request, 'show_pwd.html', {'error': error})
-
-
 
 
 class Login(View):
@@ -71,7 +69,7 @@ class SavePwd(View):
         makePwd = make_password(pwd)
 
         user_obj = User.objects.get(name=request.session['user'])
-        savePwd = SavePassword.objects.create(user=user_obj, title=title, pwd=pwd, url=url,hide_pwd=makePwd)
+        savePwd = SavePassword.objects.create(user=user_obj, title=title, pwd=pwd, url=url, hide_pwd=makePwd)
         savePwd.save()
 
         return redirect('index')
@@ -83,7 +81,7 @@ class Edit(View):
         params = {'obj': pwd_id_obj}
         return render(request, 'edit.html', params)
 
-    def post(self,request, id):
+    def post(self, request, id):
         pwd_obj = SavePassword.objects.get(id=id)
 
         new_title = request.POST['title']
@@ -99,9 +97,16 @@ class Edit(View):
         pwd_obj.save()
 
         return redirect('index')
+
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = SavePassword
     template_name = 'delete.html'
     success_url = '/'
+
     def test_func(self):
         return True
+
+
+def stopit(request):
+    return render(request, '404.html')
